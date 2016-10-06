@@ -26,14 +26,14 @@ public class Controller {
 	public void selectBox(Box box) {
 		if (selectedBox == null) {
 			selectedBox = box;
-			box.setStroke(Color.WHITE);
+			//box.setStroke(Color.WHITE);
 		    toolbar.showDeleteButton();
 		    toolbar.showAddRelationButton();
 		} 
 		else if (box != selectedBox) {
-			selectedBox.setStroke(null);
+			//selectedBox.setStroke(null);
 			selectedBox = box;
-			box.setStroke(Color.WHITE);
+			//box.setStroke(Color.WHITE);
 		}
 	}
 
@@ -50,7 +50,7 @@ public class Controller {
 		if (selectedBox != null){
 			toolbar.hideDeleteButton();
 			toolbar.hideAddRelationButton();
-			selectedBox.setStroke(null);
+			//selectedBox.setStroke(null);
 			selectedBox = null;
 		}
 		

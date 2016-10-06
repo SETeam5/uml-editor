@@ -12,8 +12,8 @@
 	-fx-background-color: #434343;
 }
 
-#rect {
-	-fx-fill: #666;
+.rect {
+	-fx-background-color: #666;
 }
 
 #relation {

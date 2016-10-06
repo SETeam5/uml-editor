@@ -1,20 +1,31 @@
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.layout.VBox;
 
-public class Box extends Rectangle {
+public class Box extends VBox {
 	Controller controller;
+	Section name;
+	Section attrib;
+	Section ops;
+	Section extra;
 
-	public Box(int x, int y, int h, int w, Controller c) {
-		super(x, y, h, w);
+	public Box(Controller c) {
+		super();
 		
 		controller = c;
 		
-		setFill(null);
 		//css ID, should be changed to class
-		setId("rect");
+		getStyleClass().add("rect");
 		Box thisBox = this;
+		setPrefHeight(241);
+		setPrefWidth(141);
 		
+		name = new Section(this);
+		attrib = new Section(this);
+		ops = new Section(this);
+		extra = new Section(this);
+		
+		getChildren().addAll(name, attrib, ops, extra);
 		
 		//box corner jumps to cursor on drag, need to fix that
 		setOnMouseDragged(new EventHandler<MouseEvent>() {
@@ -26,8 +37,8 @@ public class Box extends Rectangle {
 				double x = event.getX();
 				double y = event.getY();
 				//round to nearest 20 px
-				setX(Math.floorDiv((int) x, 20) * 20);
-				setY(Math.floorDiv((int) y, 20) * 20);
+				setTranslateX(Math.floorDiv((int) x, 20) * 20);
+				setTranslateY(Math.floorDiv((int) y, 20) * 20);
 			}
 		});
 		

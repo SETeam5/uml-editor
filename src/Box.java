@@ -20,10 +20,10 @@ public class Box extends VBox {
 		setPrefHeight(241);
 		setPrefWidth(141);
 		
-		name = new Section(this);
-		attrib = new Section(this);
-		ops = new Section(this);
-		extra = new Section(this);
+		name = new Section(this, "Class name");
+		attrib = new Section(this, "Attributes");
+		ops = new Section(this, "Operations");
+		extra = new Section(this, "Miscellaneous");
 		
 		getChildren().addAll(name, attrib, ops, extra);
 		

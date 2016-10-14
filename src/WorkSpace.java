@@ -9,6 +9,7 @@ public class WorkSpace extends Pane{
 	public WorkSpace(Controller c) {
 		
 		controller = c;
+		WorkSpace workspace = this;
 		
 		getStyleClass().add("noGrid");
 		
@@ -16,6 +17,7 @@ public class WorkSpace extends Pane{
 			@Override
 			public void handle(MouseEvent event) {
 				controller.deselect();
+				workspace.requestFocus();
 			}
 		});
 	}

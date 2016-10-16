@@ -2,6 +2,11 @@
 	-fx-background-color: #333;
 }
 
+.section {
+	-fx-border-width: 3 3 0 3;
+	-fx-border-color: #333;
+}
+
 .grid {
     -fx-background-color: #434343,
     	linear-gradient(from 0.5px 0px to 10.5px 0px, repeat, #555 5%, transparent 5%),
@@ -12,11 +17,13 @@
 	-fx-background-color: #434343;
 }
 
-.rect {
+.box {
 	-fx-background-color: #666;
+	-fx-border-width: 0 0 3 0;
+	-fx-border-color: #333;
 }
 
-#relation {
+.relation {
 	-fx-stroke: #666;
 	-fx-stroke-width: 3.0;
 }

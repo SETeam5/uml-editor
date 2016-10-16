@@ -12,8 +12,6 @@ public class ContextMenu extends VBox {
 	Button addRelation;
 
 	public ContextMenu(Controller c) {
-		super();
-		
 		controller = c;
 		
 		//space between buttons

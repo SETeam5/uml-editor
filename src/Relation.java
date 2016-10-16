@@ -11,7 +11,7 @@ public class Relation extends Line {
 		//setStartX(Math.floorDiv((int) startX, 20) * 20);
 		//setStartY(Math.floorDiv((int) startY, 20) * 20);
 
-		setId("relation");
+		getStyleClass().add("relation");
 	}
 
 	public void setEndPoint(Box endBox) {

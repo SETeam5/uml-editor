@@ -25,7 +25,6 @@ public class Box extends VBox {
 		extra = new Section(this, "add miscellaneous");
 		getChildren().addAll(name, attrib, ops, extra);
 		
-		//box corner jumps to cursor on drag, need to fix that
 		setOnMouseDragged(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {

@@ -1,5 +1,4 @@
 import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.Color;
 
 public class Controller {
 
@@ -26,15 +25,14 @@ public class Controller {
 	public void selectBox(Box box) {
 		if (selectedBox == null) {
 			selectedBox = box;
-			//box.setStroke(Color.WHITE);
 		    toolbar.showDeleteButton();
 		    toolbar.showAddRelationButton();
 		} 
 		else if (box != selectedBox) {
-			//selectedBox.setStroke(null);
+			selectedBox.getStyleClass().remove("box-shadow");
 			selectedBox = box;
-			//box.setStroke(Color.WHITE);
 		}
+		box.getStyleClass().add("box-shadow");
 	}
 
 	public void deleteSelected() {
@@ -50,7 +48,7 @@ public class Controller {
 		if (selectedBox != null){
 			toolbar.hideDeleteButton();
 			toolbar.hideAddRelationButton();
-			//selectedBox.setStroke(null);
+			selectedBox.getStyleClass().remove("box-shadow");
 			selectedBox = null;
 		}
 		

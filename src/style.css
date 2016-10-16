@@ -23,6 +23,10 @@
 	-fx-border-color: #333;
 }
 
+.box-shadow {
+	-fx-effect: dropshadow(three-pass-box, #666, 30, 0, 0, 0);
+}
+
 .relation {
 	-fx-stroke: #666;
 	-fx-stroke-width: 3.0;

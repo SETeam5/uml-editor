@@ -1,5 +1,3 @@
-package seproject5;
-
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -13,7 +11,7 @@ public class App extends Application {
 		Controller controller = new Controller();		
 
 		Scene scene = new Scene(controller.ui, 1200, 800);
-		scene.getStylesheets().add("/seproject5/style.css");
+		scene.getStylesheets().add("style.css");
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}

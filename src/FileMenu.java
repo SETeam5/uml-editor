@@ -1,3 +1,5 @@
+package seproject5;
+
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 

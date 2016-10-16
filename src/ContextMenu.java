@@ -1,15 +1,20 @@
+package seproject5;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 
 public class ContextMenu extends VBox {
 
 	Controller controller;
-	Button deleteBox;
+	Button delete;
 	Button addBox;
 	Button addRelation;
+	//private int p;
 
 	public ContextMenu(Controller c) {
 		controller = c;
@@ -17,10 +22,12 @@ public class ContextMenu extends VBox {
 		//space between buttons
 		setSpacing(10);
 		setPadding(new Insets(20, 10, 10, 10));
+		//preferred width - need to unify button widths and this won't be an issue
+		setPrefWidth(105);
 
-		addBox = new Button("  Create Box  ");
-		deleteBox = new Button("  Delete Box  ");
+		addBox = new Button("Create Box");
 		addRelation = new Button("Add Relation");
+		delete = new Button("Delete");
 		getChildren().add(addBox);
 		getStyleClass().add("vbox");
 
@@ -34,8 +41,7 @@ public class ContextMenu extends VBox {
 			}
 		});
 
-		//only available when a box is selected
-		deleteBox.setOnAction(new EventHandler<ActionEvent>() {
+		delete.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				controller.deleteSelected();
@@ -53,11 +59,19 @@ public class ContextMenu extends VBox {
 	}
 
 	public void showDeleteButton() {
-		getChildren().add(deleteBox);
+		getChildren().add(delete);
 	}
 	
 	public void hideDeleteButton() {
-		getChildren().remove(deleteBox);
+		getChildren().remove(delete);
+	}
+	
+	public void showAddBoxButton() {
+		getChildren().add(addBox);
+	}
+	
+	public void hideAddBoxButton() {
+		getChildren().remove(addBox);
 	}
 
 	public void showAddRelationButton() {

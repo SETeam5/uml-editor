@@ -1,0 +1,44 @@
+UML Editor First Iteration
+Design Summary
+10/5/2016
+Team: FiVe
+Ryan Peterson
+Eric Dougherty
+Kelsey Fulton
+Timothy Kettering
+Matt McAnulty
+
+#############################
+# UML Editor Design Summary #
+#############################
+
+      The focus on the overall design for the first iteration of the UML editor was primarily for developing the basic elements for an intuitive, consistent, and thought out UI that works well with the software’s design. While the functionality of this iteration was still a priority it was more important that we have a solid understanding of how we wanted the program to behave and look. Our thinking was that by taking the time to work this out early on it will (hopefully) save us from having to recode large parts of our program in order to add more features for future iterations.
+
+
+##################################
+# Current Functionality/Behavior #
+##################################
+
+	At this point our UML editor opens and displays a standard horizontal menu bar, a vertical toolbar on the left, and a large central staging area/work space in the center. Currently the user can create a box by clicking the box button on the toolbar. A box appears and can be moved by the user. To move the box the user can mouse down and hold over the box. Once this is done a grid will appear on the screen in the stage/workspace area. While still moused down (and the grid is present) the user can move the mouse to change the position of the box in the staging area. Releasing the mouse button will snap the box on the grid at the selected location, and the grid view will disappear.
+	Once a box has been placed the user has access to further options on the toolbar. There are two more buttons. One will be used to create relations between the boxes, and the second can be used to erase boxes. 	
+
+
+#########################
+# User Interface Design #
+#########################
+
+	The UI design is selection focused. The idea here being that objects once rendered in the workspace area are selectable. Once an object is selected the toolbar will display actions that can be performed on that object. This is to streamline the interface for the user in an attempt to create a simplified, and intuitive experience. It also serves a practical use as well. It allows for future scalability of the toolbar interface to include more buttons/features on a single toolbar without worrying about making all the buttons fit into the usable area within the toolbar simultaneously. For example when a class box is selected then toolbar should show options unique to a class box. The hope is that doing this will provide consistent UI experience while still being intuitive.
+
+
+###################
+# Software Design #
+###################
+
+	The program is written using JavaFX. When launched the program creates a staging area for the application with a default size of 1200 x 800. It also creates an instantiation of the controller class. The controller class is responsible for displaying all the elements of the UML Editor application such as the toolbar, boxes, relations, the workspace, and eventually arrows and text labels. The program also uses a CSS style sheet for its visual motif and physical layout. The toolbar, controller, and the workspace are all singletons in that there will only ever be one of each. The program uses the Model View Controller (MVC) design with the controller class functioning as the controller, and having access to the relation, box, toolbar and workspace classes. 
+
+
+#######################
+# Future Design/Plans #
+#######################
+
+	For future iterations of UML Editor the team would like to implement features such as saving and loading diagrams, and provided the time possibly printing of the diagrams. The toolbar will have the ability to manipulate relations (when they are selected) to include different arrows to correspond with different types of relations, and the relations themselves will track and snap to class boxes when they are moved to new positions. The class boxes when selected will allow for several text fields inside of them to be manipulated. The ability to add text labels/fields to a class or relation is also something that the team plans to add to the program. Text for the buttons in the toolbar will ideally be replaced with simple images to illustrate the buttons function.

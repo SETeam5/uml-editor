@@ -1,5 +1,3 @@
-package seproject5;
-
 import java.util.ArrayList;				//serializable object
 
 public class Model {

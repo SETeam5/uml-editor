@@ -31,12 +31,14 @@ public class Controller {
 			selectedBox = box;
 			toolbar.showAddRelationButton();
 			toolbar.showDeleteButton();
-			box.getStyleClass().add("box-shadow");
+			selectedBox.getStyleClass().add("box-shadow");
+			selectedBox.select();
 		} 
 		else if (box != selectedBox) {
 			selectedBox.getStyleClass().remove("box-shadow");
 			selectedBox = box;
-			box.getStyleClass().add("box-shadow");
+			selectedBox.getStyleClass().add("box-shadow");
+			selectedBox.select();
 		}
 	}
 
@@ -60,6 +62,7 @@ public class Controller {
 		if (selectedBox != null){
 			toolbar.hideDeleteButton();
 			toolbar.hideAddRelationButton();
+			selectedBox.deselect();
 			selectedBox.getStyleClass().remove("box-shadow");
 			selectedBox = null;
 			cancelCurrentRelation();

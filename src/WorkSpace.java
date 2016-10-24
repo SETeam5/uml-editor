@@ -16,9 +16,9 @@ public class WorkSpace extends Pane{
 		setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				controller.deselectBox();
-				controller.deselectRelation();
 				workspace.requestFocus();
+				controller.deselectRelation();
+				controller.deselectBox();
 			}
 		});
 	}

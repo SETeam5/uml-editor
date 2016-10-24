@@ -7,11 +7,7 @@ public class Section extends VBox {
 	public Section(Box b, String s) {
 		parent = b;
 		prompt = s;
-
-		Section thisSection = this;
-		TextLine placeholder = new TextLine(prompt, thisSection);
 		
-		getChildren().add(placeholder);
 		setMinHeight(60);
 		getStyleClass().add("section");
 	}
@@ -44,6 +40,19 @@ public class Section extends VBox {
 			addInput(prompt, null);
 		}
 
+	}
+	
+	public void deselect() {
+		getChildren().remove(getChildren().size() - 1);
+	}
+	
+	public boolean isEmpty() {
+		return (getChildren().size() == 0);
+	}
+	
+	public void select() {
+		TextLine placeholder = new TextLine(prompt, this);
+		getChildren().add(placeholder);
 	}
 
 }

@@ -1,12 +1,11 @@
-package seproject5;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class ContextMenu extends VBox {
 
@@ -14,11 +13,17 @@ public class ContextMenu extends VBox {
 	Button delete;
 	Button addBox;
 	Button addRelation;
-	//private int p;
-
-	public ContextMenu(Controller c) {
-		super();
-		
+    
+    Image imageDelete = new Image(getClass().getResourceAsStream("/src/b_eras.png"));
+    Image imageBox = new Image(getClass().getResourceAsStream("/src/b_cbox.png"));
+    Image imageRelation = new Image(getClass().getResourceAsStream("/src/b_rela.png"));
+    Image imageAggrigation = new Image(getClass().getResourceAsStream("/src/b_aggr.png"));
+    Image imageComposion = new Image(getClass().getResourceAsStream("/src/b_comp.png"));
+    Image imageDependency = new Image(getClass().getResourceAsStream("/src/b_depe.png"));
+    Image imageGeneralization = new Image(getClass().getResourceAsStream("/src/b_gene.png"));
+    Image imageLine = new Image(getClass().getResourceAsStream("/src/b_line.png"));
+	
+	public ContextMenu(Controller c, final Model model) {
 		controller = c;
 		
 		//space between buttons
@@ -28,8 +33,14 @@ public class ContextMenu extends VBox {
 		setPrefWidth(105);
 
 		addBox = new Button("Create Box");
+        addBox.setGraphic(new ImageView(imageBox));
+                
 		addRelation = new Button("Add Relation");
+        addRelation.setGraphic(new ImageView(imageRelation));
+                
 		delete = new Button("Delete");
+        delete.setGraphic(new ImageView(imageDelete));
+                
 		getChildren().add(addBox);
 		getStyleClass().add("vbox");
 
@@ -37,7 +48,8 @@ public class ContextMenu extends VBox {
 		addBox.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				Box rect = new Box(20, 20, 141, 241, controller);
+				Box rect = new Box(controller, model);
+				rect.setLayoutY(20);
 				controller.workspace.getChildren().add(rect);
 				controller.cancelCurrentRelation();
 			}
@@ -48,6 +60,7 @@ public class ContextMenu extends VBox {
 			public void handle(ActionEvent event) {
 				controller.deleteSelected();
 				controller.cancelCurrentRelation();
+				
 			}
 		});
 

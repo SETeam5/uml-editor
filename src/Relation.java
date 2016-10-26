@@ -1,4 +1,3 @@
-package seproject5;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
@@ -9,17 +8,16 @@ public class Relation extends Line {
 	private Box startBox = null;
 	Controller controller;
 	Relation relation;
+	Integer id;
 
-	public Relation(Box startBox, Controller c) {
+	public Relation(Box startBox, Controller c, Model model) {
 		this.controller = c;
 		this.startBox = startBox;
-		double startX = startBox.getX() + (startBox.getWidth() / 2);
-		double startY = startBox.getY() + (startBox.getHeight() / 2);
-		setStartX(((int)(startX / 20)) * 20);
-		setStartY(((int)(startY / 20)) * 20);
+		startXProperty().bind(startBox.layoutXProperty().add(startBox.widthProperty().divide(2)));
+		startYProperty().bind(startBox.layoutYProperty().add(startBox.heightProperty().divide(2)));
 		final Relation relation = this;
 		
-		setId("relation");
+		getStyleClass().add("relation");
 		
 		setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
@@ -32,10 +30,8 @@ public class Relation extends Line {
 	}
 
 	public void setEndPoint(Box endBox) {
-		double endX = endBox.getCurrentX() + (endBox.getWidth() / 2);
-		double endY = endBox.getCurrentY() + (endBox.getHeight() / 2);
-		setEndX(((int)(endX / 20)) * 20);
-		setEndY(((int)(endY / 20)) * 20);
+		endXProperty().bind(endBox.layoutXProperty().add(endBox.widthProperty().divide(2)));
+		endYProperty().bind(endBox.layoutYProperty().add(endBox.heightProperty().divide(2)));
 	}
 
 	public Box getStartingBox() {

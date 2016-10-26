@@ -1,0 +1,49 @@
+.vbox {
+	-fx-background-color: #333;
+}
+
+.section {
+	-fx-border-width: 3 3 0 3;
+	-fx-border-color: #333;
+}
+
+.grid {
+    -fx-background-color: #434343,
+    	linear-gradient(from 0.5px 0px to 10.5px 0px, repeat, #555 5%, transparent 5%),
+    	linear-gradient(from 0px 0.5px to 0px 10.5px, repeat, #555 5%, transparent 5%);
+}
+
+.noGrid {
+	-fx-background-color: #434343;
+}
+
+.box {
+	-fx-background-color: #666;
+	-fx-border-width: 0 0 3 0;
+	-fx-border-color: #333;
+}
+
+.box-shadow {
+	-fx-effect: dropshadow(three-pass-box, #666, 30, 0, 0, 0);
+}
+
+.relation {
+	-fx-stroke: #666;
+	-fx-stroke-width: 3.0;
+}
+
+.menu {
+	-fx-background-color: #222;
+}
+
+.menu .label {
+	-fx-text-fill: #999;
+}
+
+.menu .label:hover {
+	-fx-text-fill: #fff;
+}
+
+.scroll-bar {
+	-fx-background-color: #222;
+}

@@ -9,7 +9,7 @@ public class Controller {
 	FileMenu menu;
 	WorkSpace workspace;
 	BorderPane ui;
-	Box selectedBox = null;
+	private Box selectedBox = null;
 	private Relation currentRelation = null;
 	private boolean addingRelation = false;
 	private Relation selectedRelation;
@@ -48,18 +48,19 @@ public class Controller {
 
 	public void deleteSelected() {
 		if (selectedBox != null) {
-			for (Relation r  : selectedBox.relations) {
-				if (r.endBox == selectedBox){
-					r.startBox.relations.remove(r);
-				}
-				else {
-					r.endBox.relations.remove(r);
-				}
-				r.remove();
-			}
 			workspace.getChildren().remove(selectedBox);
 			toolbar.hideDeleteButton();
 			toolbar.hideAddRelationButton();
+			//remove any relations attached to the box being removed
+			Set<Relation> relationsToRemove = new HashSet<Relation>();
+			for (Relation r : relations) {
+				if (r.getEndBox() == selectedBox || r.getStartBox() == selectedBox) {
+					r.remove();
+					relationsToRemove.add(r);
+				}
+			}
+			relations.removeAll(relationsToRemove);
+			
 			selectedBox = null;
 		}
 		if (selectedRelation != null) {
@@ -71,7 +72,6 @@ public class Controller {
 	}
 	
 	public void deselectBox() {
-
 		if (selectedBox != null){
 			toolbar.hideDeleteButton();
 			toolbar.hideAddRelationButton();
@@ -80,7 +80,6 @@ public class Controller {
 			selectedBox = null;
 			cancelCurrentRelation();
 		}
-		
 	}
 	
 	public void deselectRelation() {
@@ -94,8 +93,13 @@ public class Controller {
 		
 	}
 	
-	public void showGrid() {
+	public void hideGrid() {
 		workspace.getStyleClass().add("noGrid");
+	}
+	
+	public void showGrid() {
+		workspace.getStyleClass().remove("noGrid");
+		workspace.getStyleClass().add("grid");
 	}
 	
 	public void startNewRelation() {
@@ -108,7 +112,7 @@ public class Controller {
 	public void endCurrentRelation(Box b) {
 		//only end relation if a box is selected
 		//and the ending box and starting box are different
-		if (b != null && !b.equals(currentRelation.getStartingBox())) {
+		if (b != null && !b.equals(currentRelation.getStartBox())) {
 			currentRelation.setEndPoint(b);
 			workspace.getChildren().add(currentRelation);
 			currentRelation.toBack();
@@ -151,13 +155,13 @@ public class Controller {
 		relations.add(r);
 	}
 	
-	public void removeRelation(Relation r) {
-		relations.remove(r);
-	}
-	
 	public void updateRelations() {
 		for (Relation r : relations) {
 			r.update();
 		}
+	}
+	
+	public Box getSelectedBox() {
+		return selectedBox;
 	}
 }

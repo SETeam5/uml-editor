@@ -8,6 +8,7 @@ public class TextLine extends Text {
 	Relation relation;
 
 	public TextLine(String s, Section p) {
+		super(s);
 		
 		parent = p;
 		TextLine thisLine = this;

@@ -4,7 +4,7 @@ import javafx.scene.layout.VBox;
 
 public class Box extends VBox {
 	Controller controller;
-	final private Section[] sections = {new Section(this, "add class name", true), new Section(this, "add attribute", false), new Section(this, "add operation", false), new Section(this, "add miscellaneous", false)};
+	private Section[] sections = {new Section(this, "add class name", true), new Section(this, "add attribute", false), new Section(this, "add operation", false), new Section(this, "add miscellaneous", false)};
 	private Double offsetX;
 	private Double offsetY;
 

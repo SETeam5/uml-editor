@@ -1,38 +1,28 @@
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class LineData {
+public class LineData implements Serializable{
 	
-	Double startx;
-	Double starty;
-	Double endx;
-	Double endy;
+	Integer startboxid;
+	Integer endboxid;
 	ArrayList<String> linetextdata;
 	Integer id;
 
-	public LineData(Double startx, Double starty, Double endx, Double endy,
-			ArrayList<String> linetextdata, Model model, Integer id) {
-		this.startx = startx;
-		this.starty = starty;
-		this.endx = endx;
-		this.endy = endy;
+	public LineData(int startboxidin, int endboxidin,ArrayList<String> linetextdata, Model model, Integer id) {
+		this.startboxid = startboxidin;
+		this.endboxid = endboxidin;
 		this.linetextdata = linetextdata;
 		this.id = id;
 		model.getLineMap().put(id, this);
 	}
 	
-	public void ResetLineData(Double startx, Double starty, Double endx, Double endy,
-			ArrayList<String> linetextdata, Model model, Integer id) {
-		this.startx = startx;
-		this.starty = starty;
-		this.endx = endx;
-		this.endy = endy;
+	public void ResetLineData(int startboxidin,int endboxidin,ArrayList<String> linetextdata, Model model, Integer id) {
+		this.id = id;
+		this.startboxid = startboxidin;
+		this.endboxid = endboxidin;
 		this.linetextdata = linetextdata;
-		model.getLineMap().replace(id, this);
-	}
-
-	public void DeleteLineData(Model model, Integer id) {
-		model.getLineMap().remove(id);
+		model.getLineMap().put(id, this);
 	}
 
 }

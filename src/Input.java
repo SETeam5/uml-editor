@@ -11,7 +11,7 @@ public class Input extends TextField{
 		
 		parent = p;
 		
-		final Input thisInput = this;
+		Input thisInput = this;
 		
 		//set input text to previous value unless it is the prompt text
 		if (!s.equals(p.prompt)) {
@@ -33,6 +33,10 @@ public class Input extends TextField{
 			}
 		});
 		
+	}
+	
+	public Input() {
+		parent = null;
 	}
 
 }

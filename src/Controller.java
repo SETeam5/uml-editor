@@ -1,5 +1,8 @@
 
+import java.util.ArrayList;
+
 import javafx.scene.control.ScrollBar;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 
@@ -15,21 +18,23 @@ public class Controller {
 	private Relation currentRelation = null;
 	private boolean addingRelation = false;
 	private Relation selectedRelation;
+	Integer boxid = 0;
+	Integer lineid = 0;
+	ArrayList<String> boxtext = new ArrayList<String>();
+	ArrayList<String> linetext = new ArrayList<String>();
 
 	public Controller(Model model) {
 		this.model = model;
-		toolbar = new ContextMenu(this, model);
-		menu = new FileMenu(model);
+	    toolbar = new ContextMenu(this, model);
+		menu = new FileMenu(model, this);
 		workspace = new WorkSpace(this);
-		scrollbar = new VerticalScrollbar(this);
+		ScrollPane scrollpane = new ScrollPane(workspace);
+		scrollpane.getStyleClass().add("scroll-pane");
 		ui = new BorderPane();
-		
-		workspace.setMinHeight(1742);
 		
 		ui.setLeft(toolbar);
 		ui.setTop(menu);
-		ui.setCenter(workspace);
-		ui.setRight(scrollbar);
+		ui.setCenter(scrollpane);
 	}
 	
 	public void selectBox(Box box) {
@@ -55,13 +60,28 @@ public class Controller {
 	public void deleteSelected() {
 		if (selectedBox != null) {
 			workspace.getChildren().remove(selectedBox);
+			selectedBox.DeleteRectangleData(selectedBox.id);
+			toolbar.boxid--;
 			toolbar.hideDeleteButton();
 			toolbar.hideAddRelationButton();
 			toolbar.showAddBoxButton();
+			for (int i = 1; i < model.reallinemap.size() + 1; i++) {
+				Relation r = model.reallinemap.get(i);
+				if (r.getEndingBox() == selectedBox || r.getStartingBox() == selectedBox) {
+					r.remove();
+					r.DeleteLineData(r.id);
+					lineid--;
+					r = null;
+					i--;
+				}
+			}
+			
 			selectedBox = null;
 		}
 		if (selectedRelation != null) {
 			workspace.getChildren().remove(selectedRelation);
+			selectedRelation.DeleteLineData(selectedRelation.id);
+			lineid--;
 			toolbar.hideDeleteButton();
 			toolbar.showAddBoxButton();
 			selectedRelation = null;
@@ -98,10 +118,8 @@ public class Controller {
 	}
 	
 	public void startNewRelation() {
-		if (selectedBox != null) {
-			addingRelation = true;
-			currentRelation = new Relation(selectedBox, this, model);
-		}
+		addingRelation = true;
+		currentRelation = new Relation(selectedBox, this, model);
 	}
 	
 	public void endCurrentRelation() {
@@ -111,6 +129,9 @@ public class Controller {
 			currentRelation.setEndPoint(selectedBox);
 			workspace.getChildren().add(currentRelation);
 			currentRelation.toBack();
+			lineid++;
+			LineData linedata = new LineData(currentRelation.getStartingBox().id,currentRelation.getEndingBox().id,linetext,model,lineid);
+			currentRelation.SetId(lineid);
 			currentRelation = null;
 			addingRelation = false;
 		} else {
@@ -146,5 +167,19 @@ public class Controller {
 		}
 	}
 
+	public void updateRelations() {
+		for (int i = 1; i < model.reallinemap.size() + 1; i++) {
+			Relation r = model.reallinemap.get(i);
+			r.update();
+		}
+	}
+	
+	public Box getSelectedBox() {
+		return selectedBox;
+	}
+	
+	public Relation getSelectedRelation() {
+		return selectedRelation;
+	}
 }
 

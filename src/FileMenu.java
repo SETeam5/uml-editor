@@ -4,16 +4,16 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 
 public class FileMenu extends MenuBar {
 	
 	Model model;
+	Controller controller;
 	
-	public FileMenu(Model passedmodel){
+	public FileMenu(Model passedmodel, Controller c){
 		
 		this.model = passedmodel;
+		this.controller = c;
 		
 		getStyleClass().add("menu");
 		
@@ -37,7 +37,7 @@ public class FileMenu extends MenuBar {
 		open.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				model.openFile();
+				model.openFile(controller);
 			}
 		});
 		

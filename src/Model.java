@@ -20,12 +20,14 @@ public class Model implements Serializable{
 	
 	Map<Integer,RectangleData> boxmap = new HashMap<Integer,RectangleData>();
 	Map<Integer,LineData> linemap = new HashMap<Integer,LineData>();
+	transient Map<Integer,Box> realboxmap = new HashMap<Integer,Box>();
+	transient Map<Integer,Relation> reallinemap = new HashMap<Integer,Relation>();
 	
 	public Model(Stage primaryStage) {
 		this.stage = primaryStage;
 	}
 	
-	public void openFile(){
+	public void openFile(Controller controller){
 		//File Chooser Code
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.getExtensionFilters().addAll(
@@ -35,7 +37,7 @@ public class Model implements Serializable{
         
 		if(file != null) {
 		//Deserialize Code
-		
+			
 			Model model;
 			
 			try{
@@ -44,7 +46,7 @@ public class Model implements Serializable{
 				model = (Model) in.readObject();
 				in.close();
 				accessfile.close();
-				reinstantiateobjects(model);
+				reinstantiateobjects(model, controller);
 			}
 			catch(FileNotFoundException c) {
 				System.out.println("File not found!");
@@ -89,7 +91,33 @@ public class Model implements Serializable{
 		}
 	}
 	
-	public static void reinstantiateobjects(Model model){
+	public void reinstantiateobjects(Model model, Controller controller){
+		
+		Map<Integer,RectangleData> myboxmap = model.getBoxMap();
+		System.out.println(myboxmap.keySet());
+		System.out.println(myboxmap.values());
+		for(int id = 1; id < myboxmap.size() + 1; id++){
+			RectangleData boxdata = myboxmap.get(id);
+			Box rect = new Box(controller, this, id, boxdata);
+			rect.setLayoutX(boxdata.xposition);
+			rect.setLayoutY(boxdata.yposition);
+			controller.workspace.getChildren().add(rect);
+			
+		}
+		
+		Map<Integer,LineData> mylinemap = model.getLineMap();
+		System.out.println(mylinemap.keySet());
+		System.out.println(mylinemap.values());
+		for(int id = 1; id < mylinemap.size() + 1; id++){
+			LineData linedata = mylinemap.get(id);
+			Box startbox = realboxmap.get(linedata.startboxid);
+			Box endbox = realboxmap.get(linedata.endboxid);
+			Relation line = new Relation(startbox,controller, this);
+			line.setEndPoint(endbox);
+			controller.workspace.getChildren().add(line);
+			line.toBack();
+			line.SetId(id);
+		}
 		
 	}
 	
@@ -100,4 +128,13 @@ public class Model implements Serializable{
 	public Map<Integer,LineData> getLineMap() {
 		return linemap;
 	}
+	
+	public Map<Integer,Box> getRealBoxMap() {
+		return realboxmap;
+	}
+	
+	public Map<Integer,Relation> getRealLineMap() {
+		return reallinemap;
+	}
+	
 }

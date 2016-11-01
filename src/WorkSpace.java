@@ -10,17 +10,20 @@ public class WorkSpace extends Pane{
 	public WorkSpace(Controller c) {
 		
 		controller = c;
-		final WorkSpace workspace = this;
+		WorkSpace workspace = this;
 		getStyleClass().add("noGrid");
-
+		setMinWidth(2000);
+		setMinHeight(2000);
+		
 		setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				
-				controller.deselectBox();
+			    controller.deselectBox();
 				controller.deselectRelation();
 				workspace.requestFocus();
-				
+				//Temporary: clicking in workspace will fix all mispositioned arrowheads
+				controller.updateRelations();
 			}
 		});
 	}

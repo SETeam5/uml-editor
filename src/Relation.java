@@ -17,7 +17,7 @@ public class Relation extends Line {
 	Integer id;
 	Model model;
 	TextLine text;
-	Input input;
+	Input input = new Input(this);
 	ArrayList<String> linetext = new ArrayList<String>();
 	//relation types
 	final int GENERALIZATION = 0;

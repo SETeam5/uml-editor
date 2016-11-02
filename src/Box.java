@@ -81,11 +81,17 @@ public class Box extends VBox {
 				if (controller.isAddingRelation()) {
 					controller.endCurrentRelation();
 				}
+				else if (thisBox != controller.getSelectedBox()) {
+					controller.deselectBox();
+					controller.selectBox(thisBox);
+				}
 				//consume keeps event from interacting with elements below
 				event.consume();
 			}
 		});
 		
+		//created box starts selected
+		controller.selectBox(this);
 		model.getRealBoxMap().put(id, this);
 		
 	}	
@@ -104,6 +110,7 @@ public class Box extends VBox {
 	}
 	
 	public void select() {
+		requestFocus();
 		for (Section s : sections){
 			s.select();
 			if (getChildren().indexOf(s) == -1) {

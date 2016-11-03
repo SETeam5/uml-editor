@@ -8,7 +8,8 @@ public class App extends Application {
 	public void start(Stage primaryStage) {
 		primaryStage.setTitle("UML Editor - fiVe");
 		
-		Controller controller = new Controller();		
+		Model model = new Model(primaryStage);
+		Controller controller = new Controller(model);		
 
 		Scene scene = new Scene(controller.ui, 1200, 800);
 		scene.getStylesheets().add("style.css");

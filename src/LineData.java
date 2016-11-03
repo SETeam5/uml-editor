@@ -1,61 +1,28 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class LineData {
+@SuppressWarnings("serial")
+public class LineData implements Serializable{
 	
-	private double startx;
-	private double starty;
-	private double endx;
-	private double endy;
-	private ArrayList<String> linetextdata;
+	Integer startboxid;
+	Integer endboxid;
+	ArrayList<String> linetextdata;
+	Integer id;
 
-	public LineData(double startx, double starty, double endx, double endy,
-			ArrayList<String> linetextdata, Model model) {
-		this.startx = startx;
-		this.starty = starty;
-		this.endx = endx;
-		this.endy = endy;
+	public LineData(int startboxidin, int endboxidin,ArrayList<String> linetextdata, Model model, Integer id) {
+		this.startboxid = startboxidin;
+		this.endboxid = endboxidin;
 		this.linetextdata = linetextdata;
-		model.getLinelist().add(this);
+		this.id = id;
+		model.getLineMap().put(id, this);
 	}
-
-	public double getStartx() {
-		return startx;
-	}
-
-	public void setStartx(double startx) {
-		this.startx = startx;
-	}
-
-	public double getStarty() {
-		return starty;
-	}
-
-	public void setStarty(double starty) {
-		this.starty = starty;
-	}
-
-	public double getEndx() {
-		return endx;
-	}
-
-	public void setEndx(double endx) {
-		this.endx = endx;
-	}
-
-	public double getEndy() {
-		return endy;
-	}
-
-	public void setEndy(double endy) {
-		this.endy = endy;
-	}
-
-	public ArrayList<String> getLinetextdata() {
-		return linetextdata;
-	}
-
-	public void setLinetextdata(ArrayList<String> linetextdata) {
+	
+	public void ResetLineData(int startboxidin,int endboxidin,ArrayList<String> linetextdata, Model model, Integer id) {
+		this.id = id;
+		this.startboxid = startboxidin;
+		this.endboxid = endboxidin;
 		this.linetextdata = linetextdata;
+		model.getLineMap().put(id, this);
 	}
 
 }

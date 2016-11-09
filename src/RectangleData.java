@@ -1,5 +1,6 @@
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * RectangleData class
@@ -9,26 +10,20 @@ import java.util.ArrayList;
 @SuppressWarnings("serial")
 public class RectangleData implements Serializable{
 
-	int width;
-	int height;
 	int xposition;
 	int yposition;
-	ArrayList<String> boxtextdata = new ArrayList<String>();
 	Integer id;
+	CopyOnWriteArrayList<RectangleTextData> boxtextdata = new CopyOnWriteArrayList<RectangleTextData>();
 	
 	/**
 	 * when a new RectangleData object is created it is passed off to be stored in
 	 * the model
-	 * @param i
-	 * @param j
 	 * @param k
 	 * @param l
 	 * @param model
 	 * @param id
 	 */
-	public RectangleData(int i, int j, int k, int l, Model model, Integer id) {
-		this.width = i;
-		this.height = j;
+	public RectangleData(int k, int l, Model model, Integer id) {
 		this.xposition = k;
 		this.yposition = l;
 		this.id = id;
@@ -45,14 +40,12 @@ public class RectangleData implements Serializable{
 	 * @param model
 	 * @param id
 	 */
-	public void ResetRectangleData(int width, int height, int xposition, int
-			yposition, ArrayList<String> boxtextdata, Model model, Integer id) {
-		this.width = width;
-		this.height = height;
+	public void ResetRectangleData(int xposition, int
+			yposition, Model model, Integer id, CopyOnWriteArrayList<RectangleTextData> boxtextin) {
 		this.xposition = xposition;
 		this.yposition = yposition;
-		this.boxtextdata = boxtextdata;
 		this.id = id;
+		this.boxtextdata = boxtextin;
 		model.getBoxMap().put(id, this);
 	}
 	

@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
@@ -11,15 +12,16 @@ import javafx.scene.layout.VBox;
  */
 public class Box extends VBox {
 	Controller controller;
-	private Section[] sections = { new Section(this, "add class name", true), new Section(this, "add attribute", false),new Section(this, "add operation", false), new Section(this, "add miscellaneous", false) };
+	Model model;
+	Section[] sections = new Section[4]; //this needs to stay this way
+	//due to a bug with the model being null with previous declaration
 	private Double offsetX;
 	private Double offsetY;
 	int previousx = 0;
 	int previousy = 0;
 	Integer id;
 	RectangleData myboxdata;
-	Model model;
-	ArrayList<String> boxtext = new ArrayList<String>();
+	CopyOnWriteArrayList<RectangleTextData> boxtext = new CopyOnWriteArrayList<RectangleTextData>();
 
 	/**
 	 * Box constructor
@@ -31,6 +33,10 @@ public class Box extends VBox {
 		id = boxid;
 		model = modelin;
 		myboxdata = myboxdatain;
+		sections[0] = new Section(this, "add class name", true, model, 0);
+		sections[1] = new Section(this, "add attribute", false, model, 1);
+		sections[2] = new Section(this, "add operation", false, model, 2);
+		sections[3] = new Section(this, "add miscellaneous", false, model, 3);
 
 		getStyleClass().add("box");
 		Box thisBox = this;
@@ -58,7 +64,7 @@ public class Box extends VBox {
 				previousy = Math.floorDiv((int) y, 20) * 20;
 				// round to nearest 20 px
 				relocate(Math.floorDiv((int) x, 20) * 20, Math.floorDiv((int) y, 20) * 20);
-				myboxdata.ResetRectangleData(141, 241, previousx, previousy, boxtext, model, id);
+				myboxdata.ResetRectangleData(previousx, previousy, model, id, myboxdata.boxtextdata);
 				controller.updateRelations();
 			}
 		});
@@ -99,6 +105,7 @@ public class Box extends VBox {
 		// created box starts selected
 		controller.selectBox(this);
 		model.getRealBoxMap().put(id, this);
+		
 	}
 	
 	/**
@@ -106,14 +113,11 @@ public class Box extends VBox {
 	 * Handles setting the state of each section
 	 */
 	public void deselect() {
-		boolean okayToHide = true;
 		for (int i = 3; i >= 1; --i) {
 			sections[i].deselect();
-			if (okayToHide && sections[i].isEmpty()) {
+			if (sections[i].isEmpty()) {
 				getChildren().remove(sections[i]);
-			} else {
-				okayToHide = false;
-			}
+			} 
 		}
 	}
 	
@@ -141,10 +145,12 @@ public class Box extends VBox {
 	public void DeleteRectangleData(Integer boxid) {
 		model.getBoxMap().remove(boxid);
 		model.getRealBoxMap().remove(boxid);
+		System.out.println(model.getBoxMap());
+		System.out.println(model.getRealBoxMap());
 		for (int i = boxid + 1; i < model.getBoxMap().size() + 2; i++) {
 
 			RectangleData boxi = model.getBoxMap().get(i);
-			boxi.ResetRectangleData(boxi.width, boxi.height, boxi.xposition, boxi.yposition, boxi.boxtextdata, model,i - 1);
+			boxi.ResetRectangleData(boxi.xposition, boxi.yposition, model, i - 1, myboxdata.boxtextdata);
 			model.getBoxMap().remove(i);
 
 			Box realboxi = model.getRealBoxMap().get(i);
@@ -162,11 +168,11 @@ public class Box extends VBox {
 	 * @param modelin
 	 * @param idin
 	 */
-	public void ResetRealRectangleData(int previousxin, int previousyin, ArrayList<String> boxtextin, Model modelin,
-			int idin) {
+	public void ResetRealRectangleData(int previousxin, int previousyin, 
+			CopyOnWriteArrayList<RectangleTextData> boxtext2, Model modelin, int idin) {
 		this.previousx = previousxin;
 		this.previousy = previousyin;
-		this.boxtext = boxtextin;
+		this.boxtext = boxtext2;
 		this.id = idin;
 		model.getRealBoxMap().put(idin, this);
 	}

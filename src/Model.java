@@ -6,8 +6,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -114,25 +117,41 @@ public class Model implements Serializable{
 	
 	/**
 	 * takes in the model acquired from .ser file and uses it's critical data maps
-	 * to reinstantiate the real objects on screen
+	 * to reinstantiate the real objects on screen. second inner for loop handles
+	 * the text creation.
 	 * @param model
 	 * @param controller
 	 */
 	public void reinstantiateobjects(Model model, Controller controller){
 		
 		Map<Integer,RectangleData> myboxmap = model.getBoxMap();
+		boxmap = myboxmap;
 		for(int id = 1; id < myboxmap.size() + 1; id++){
-			RectangleData boxdata = myboxmap.get(id);
+			RectangleData boxdata = boxmap.get(id);
 			Box rect = new Box(controller, this, id, boxdata);
 			rect.setLayoutX(boxdata.xposition);
 			rect.setLayoutY(boxdata.yposition);
+			CopyOnWriteArrayList<RectangleTextData> textdata = boxdata.boxtextdata;
+			for(RectangleTextData rtd: textdata){
+				TextLine text = new TextLine(rtd.text, rect.sections[rtd.sectionnumber]);
+				if(rtd.sectionindex != rtd.sectionsize - 1){
+					System.out.println(rtd.text);
+					rect.sections[rtd.sectionnumber].getChildren().add(rtd.sectionindex, text);
+				}
+				else{
+					System.out.println("HI");
+					rect.sections[rtd.sectionnumber].getChildren().set(rtd.sectionindex, text);
+				}	
+				
+			}
+			controller.deselectBox();
 			controller.workspace.getChildren().add(rect);
-			
 		}
 		
 		Map<Integer,LineData> mylinemap = model.getLineMap();
+		linemap = mylinemap;
 		for(int id = 1; id < mylinemap.size() + 1; id++){
-			LineData linedata = mylinemap.get(id);
+			LineData linedata = linemap.get(id);
 			Box startbox = realboxmap.get(linedata.startboxid);
 			Box endbox = realboxmap.get(linedata.endboxid);
 			Relation line = new Relation(startbox,controller, this);
@@ -140,9 +159,8 @@ public class Model implements Serializable{
 			line.SetId(id);
 			controller.workspace.getChildren().add(line);
 			line.toBack();
-		
 		}
-		
+
 	}
 	
 	/**

@@ -81,7 +81,9 @@ public class Controller {
 			toolbar.hideAddRelationButton();
 			//remove any relations attached to the box being removed
 			for (int i = 1; i < model.reallinemap.size() + 1; i++) {
+				System.out.println(model.reallinemap);
 				Relation r = model.reallinemap.get(i);
+				System.out.println(r);
 				if (r.getEndingBox() == selectedBox || r.getStartingBox() == selectedBox) {
 					r.remove();
 					r.DeleteLineData(r.id);

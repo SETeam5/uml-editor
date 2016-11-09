@@ -53,8 +53,9 @@ public class ContextMenu extends VBox {
 			public void handle(ActionEvent event) {
 				controller.deselectBox();
 				boxid++;
-				RectangleData boxdata = new RectangleData(141,241,0,0,model,boxid);
-				Box rect = new Box(controller, model, boxid, boxdata);				controller.workspace.getChildren().add(rect);
+				RectangleData boxdata = new RectangleData(0,0,model,boxid);
+				Box rect = new Box(controller, model, boxid, boxdata);				
+				controller.workspace.getChildren().add(rect);
 				controller.cancelCurrentRelation();
 			}
 		});

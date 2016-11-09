@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 import javafx.scene.layout.VBox;
 
 /**
@@ -11,6 +13,8 @@ public class Section extends VBox {
 	Box parent;
 	String prompt;
 	boolean isTitle;
+	Model model;
+	int sectionnumber;
 
 	/**
 	* Section constructor
@@ -18,10 +22,12 @@ public class Section extends VBox {
 	* @param s - Placeholder prompt that goes in an empty TextLine for this section
 	* @param t - Boolean value denoting if this section is a Title section
 	*/
-	public Section(Box b, String s, boolean t) {
+	public Section(Box b, String s, boolean t, Model modelin, int sectionnumberin) {
 		parent = b;
 		prompt = s;
 		isTitle = t;
+		model = modelin;
+		sectionnumber = sectionnumberin;
 		
 		setMinHeight(30);
 		getStyleClass().add("section");
@@ -58,6 +64,10 @@ public class Section extends VBox {
 			TextLine text = new TextLine(str, this);
 			int index = getChildren().indexOf(inputBox);
 			getChildren().set(index, text);
+			RectangleTextData rtd = new RectangleTextData(str,index,sectionnumber,parent.myboxdata);
+			parent.boxtext.add(rtd);
+			parent.ResetRealRectangleData(parent.previousx, parent.previousy, parent.boxtext, model, parent.id);
+			model.getBoxMap().get(parent.id).ResetRectangleData(parent.previousx, parent.previousy, model, parent.id, parent.boxtext);
 			getChildren().remove(inputBox);
 			
 			//add another input if prev input wasn't blank and we're at the end of the list

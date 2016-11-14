@@ -40,6 +40,7 @@ public class RectangleTextData implements Serializable{
 			}
 		}*/
 		//need this so all pieces of text in a section have the same section size
+		/*
 		for(RectangleTextData rtd: rd.boxtextdata){
 			if((rtd.sectionnumber == this.sectionnumber) && (rtd.sectionindex == 0)) {
 				rtd.sectionsize++;
@@ -50,7 +51,7 @@ public class RectangleTextData implements Serializable{
 						rtdd.sectionsize = rtd.sectionsize;
 					}
 			}
-		}
+		}*/
 		
 	}
 

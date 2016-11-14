@@ -1,60 +1,64 @@
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * RectangleData class
- * Class is similiar to the LindeData class, it posesses the critical information of
- * the box objects
+ * Initial work for future iteration - not implemented
  */
-@SuppressWarnings("serial")
-public class RectangleData implements Serializable{
+public class RectangleData {
 
-	int xposition;
-	int yposition;
-	Integer id;
-	CopyOnWriteArrayList<RectangleTextData> boxtextdata = new CopyOnWriteArrayList<RectangleTextData>();
+	private double width;
+	private double height;
+	private double xposition;
+	private double yposition;
+	private ArrayList<String> boxtextdata;
 	
-	/**
-	 * when a new RectangleData object is created it is passed off to be stored in
-	 * the model
-	 * @param k
-	 * @param l
-	 * @param model
-	 * @param id
-	 */
-	public RectangleData(int k, int l, Model model, Integer id) {
-		this.xposition = k;
-		this.yposition = l;
-		this.id = id;
-		model.getBoxMap().put(id, this);
-	}
-	
-	/**
-	 * Whenever a box is modifed it's critical information is changed in the model
-	 * @param width
-	 * @param height
-	 * @param xposition
-	 * @param yposition
-	 * @param boxtextdata
-	 * @param model
-	 * @param id
-	 */
-	public void ResetRectangleData(int xposition, int
-			yposition, Model model, Integer id, CopyOnWriteArrayList<RectangleTextData> boxtextin) {
+	public RectangleData(double width, double height, double xposition, double
+			yposition, ArrayList<String> boxtextdata, Model model) {
+		this.width = width;
+		this.height = height;
 		this.xposition = xposition;
 		this.yposition = yposition;
-		this.id = id;
-		this.boxtextdata = boxtextin;
-		model.getBoxMap().put(id, this);
+		this.boxtextdata = boxtextdata;
+		model.getBoxlist().add(this);
 	}
-	
-	/**
-	 * a simple getter for the id of the box
-	 * @return
-	 */
-	public int getId() {
-		return id;
+
+	public double getWidth() {
+		return width;
+	}
+
+	public void setWidth(double width) {
+		this.width = width;
+	}
+
+	public double getHeight() {
+		return height;
+	}
+
+	public void setHeight(double height) {
+		this.height = height;
+	}
+
+	public double getXposition() {
+		return xposition;
+	}
+
+	public void setXposition(double xposition) {
+		this.xposition = xposition;
+	}
+
+	public double getYposition() {
+		return yposition;
+	}
+
+	public void setYposition(double yposition) {
+		this.yposition = yposition;
+	}
+
+	public ArrayList<String> getBoxtextdata() {
+		return boxtextdata;
+	}
+
+	public void setBoxtextdata(ArrayList<String> boxtextdata) {
+		this.boxtextdata = boxtextdata;
 	}
 
 }

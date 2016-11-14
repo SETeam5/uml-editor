@@ -26,8 +26,7 @@ public class Testing {
 		thread.start();// Initialize the thread
 		Thread.sleep(1000); // Time to use the app, with out this, the thread will be killed before you can tell.
 
-		Model model = new Model();
-		Controller c = new Controller(model);
+		Controller c = new Controller();
 		c.toolbar.addBox.fire();
 		assertTrue ("Box not added", c.workspace.getChildren().size() == 1);
 		Box box = (Box) c.workspace.getChildren().get(0);
@@ -69,8 +68,7 @@ public class Testing {
 				thread.start();// Initialize the thread
 				Thread.sleep(1000); // Time to use the app, with out this, the thread will be killed before you can tell.
 
-		Model model = new Model();
-		Controller c = new Controller(model);
+		Controller c = new Controller();
 		c.toolbar.addBox.fire();
 		Box boxA = c.getSelectedBox();
 		c.toolbar.addBox.fire();
@@ -89,9 +87,9 @@ public class Testing {
 		
 		//Where is fifth element coming from?
 		//assertTrue("Should be 4 elements in the workspace", c.workspace.getChildren().size() == 4);
-		assertTrue("Should be 1 relation in relations", model.getRealLineMap().size() == 1);
+		assertTrue("Should be 1 relation in relations", c.getRelations().size() == 1);
 		
-		Relation r = model.getRealLineMap().get(1);
+		Relation r = c.getRelations().iterator().next();
 		assertTrue("r should start at boxC", r.getStartBox() == boxC);
 		assertTrue("r should end at boxB", r.getEndBox() == boxB);
 		
@@ -104,8 +102,8 @@ public class Testing {
 		
 		c.deleteSelected();
 
-		//are relations being removed from the map properly?
-		assertTrue("relations should be empty", model.getRealLineMap().isEmpty());
+		//are relations being removed from the set properly?
+		//assertTrue("relations should be empty", c.getRelations().isEmpty());
 		assertTrue("selectedRelation should be null", c.getSelectedRelation() == null);
 		assertTrue("selectedBox should be null", c.getSelectedBox() == null);
 	}
@@ -128,8 +126,7 @@ public class Testing {
 				thread.start();// Initialize the thread
 				Thread.sleep(1000); // Time to use the app, with out this, the thread will be killed before you can tell.
 
-		Model model = new Model();
-		Controller c = new Controller(model);
+		Controller c = new Controller();
 		
 		assertTrue("Only one button should be showing", c.toolbar.getChildren().size() == 1);
 		assertTrue("Button should be delete", c.toolbar.getChildren().get(0) == c.toolbar.addBox);
@@ -143,7 +140,7 @@ public class Testing {
 		
 		c.toolbar.addRelation.fire();
 		c.endCurrentRelation(boxA);
-		Relation r = model.getRealLineMap().get(1);
+		Relation r = c.getRelations().iterator().next();
 		c.selectRelation(r);
 
 		assertTrue("r should be selected", c.getSelectedRelation() == r);

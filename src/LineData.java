@@ -1,51 +1,64 @@
-import java.io.Serializable;
 import java.util.ArrayList;
 
-@SuppressWarnings("serial")
-
 /**
- * LineData Class
- * Stores critical information about the line objects that is put into the model
- * This is used for saving and opening the diagrams
+ * Initial work for future iteration - not implemented
  */
-public class LineData implements Serializable{
+public class LineData {
 	
-	Integer startboxid;
-	Integer endboxid;
-	ArrayList<String> linetextdata;
-	Integer id;
+	private double startx;
+	private double starty;
+	private double endx;
+	private double endy;
+	private ArrayList<String> linetextdata;
 
-	/**
-	 * LineData Constructor
-	 * Takes in a new line object and stores it in the model
-	 * @param startboxidin
-	 * @param endboxidin
-	 * @param linetextdata
-	 * @param model
-	 * @param id
-	 */
-	public LineData(int startboxidin, int endboxidin,ArrayList<String> linetextdata, Model model, Integer id) {
-		this.startboxid = startboxidin;
-		this.endboxid = endboxidin;
+	public LineData(double startx, double starty, double endx, double endy,
+			ArrayList<String> linetextdata, Model model) {
+		this.startx = startx;
+		this.starty = starty;
+		this.endx = endx;
+		this.endy = endy;
 		this.linetextdata = linetextdata;
-		this.id = id;
-		model.getLineMap().put(id, this);
+		model.getLinelist().add(this);
 	}
-	
-	/**
-	 * Takes in a specific linedata object and resets it's data in the model
-	 * @param startboxidin
-	 * @param endboxidin
-	 * @param linetextdata
-	 * @param model
-	 * @param id
-	 */
-	public void ResetLineData(int startboxidin,int endboxidin,ArrayList<String> linetextdata, Model model, Integer id) {
-		this.id = id;
-		this.startboxid = startboxidin;
-		this.endboxid = endboxidin;
+
+	public double getStartx() {
+		return startx;
+	}
+
+	public void setStartx(double startx) {
+		this.startx = startx;
+	}
+
+	public double getStarty() {
+		return starty;
+	}
+
+	public void setStarty(double starty) {
+		this.starty = starty;
+	}
+
+	public double getEndx() {
+		return endx;
+	}
+
+	public void setEndx(double endx) {
+		this.endx = endx;
+	}
+
+	public double getEndy() {
+		return endy;
+	}
+
+	public void setEndy(double endy) {
+		this.endy = endy;
+	}
+
+	public ArrayList<String> getLinetextdata() {
+		return linetextdata;
+	}
+
+	public void setLinetextdata(ArrayList<String> linetextdata) {
 		this.linetextdata = linetextdata;
-		model.getLineMap().put(id, this);
 	}
 
 }

@@ -1,34 +1,28 @@
-import java.util.ArrayList;
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.*;
 
-/* Class Invariant:
-1. controller always refers to the same controller, and never is null after assignment
-2. arrowHead and endBox are never null after assignment
-*/
 public class Relation extends Line {
+	/* Class Invariant:
+    1. controller always refers to the same controller, and never is null after assignment
+    2. arrowHead and endBox are never null after assignment
+	*/
 
 	private Box startBox = null;
 	private Box endBox = null;
-	int startboxid;
-	int endboxid;
-	Relation relation;
-	Integer id;
-	Model model;
 	private Controller controller;
 	private TextLine text;
 	private Input input = new Input(this);
-	ArrayList<String> linetext = new ArrayList<String>();
-
-	// relation types
+	
+	//relation types
 	final int GENERALIZATION = 0;
 	final int AGGREGATION = 1;
-	// ...
+	//...
+	
 	private ImageView arrowHead;
-
+	
 	/**
 	 * Assigns startBox and controller, to the passed parameters
 	 * Click event to select this relation
@@ -40,10 +34,9 @@ public class Relation extends Line {
 	 * @postcondition
 	 * 		startBox, controller, text, and arrowHead are not null
 	 */
-	public Relation(Box startBox, Controller c, Model model) {
+	public Relation(Box startBox, Controller c) {
 		this.controller = c;
 		this.startBox = startBox;
-		this.model = model;
 		// not necessarily a grid position
 		startXProperty().bind(startBox.layoutXProperty().add(startBox.widthProperty().divide(2)));
 		startYProperty().bind(startBox.layoutYProperty().add(startBox.heightProperty().divide(2)));
@@ -59,9 +52,9 @@ public class Relation extends Line {
 				event.consume();
 			}
 		});
-
+		
 		text = new TextLine("add text here", this);
-
+		
 		arrowHead = new ImageView();
 	}
 
@@ -75,14 +68,13 @@ public class Relation extends Line {
 	 */
 	public void setEndPoint(Box endBox) {
 		this.endBox = endBox;
-		endboxid = endBox.id;
-		startboxid = startBox.id;
 		// not necessarily a grid position
 		endXProperty().bind(endBox.layoutXProperty().add(endBox.widthProperty().divide(2)));
 		endYProperty().bind(endBox.layoutYProperty().add(endBox.heightProperty().divide(2)));
-
+		
 		setRelationType(GENERALIZATION);
 		controller.workspace.getChildren().add(arrowHead);
+		controller.addRelation(this);
 		addText();
 		update();
 	}
@@ -90,11 +82,11 @@ public class Relation extends Line {
 	public Box getStartBox() {
 		return startBox;
 	}
-
+	
 	public Box getEndBox() {
 		return endBox;
 	}
-
+	
 	/**
 	 * Binds text to midpoint of this relation
 	 */
@@ -102,7 +94,7 @@ public class Relation extends Line {
 		text.layoutXProperty().bind(startXProperty().add(endXProperty()).divide(2));
 		text.layoutYProperty().bind(startYProperty().add(endYProperty()).divide(2));
 	}
-
+	
 	/**
 	 * Text is added to workspace to be displayed
 	 */
@@ -111,7 +103,7 @@ public class Relation extends Line {
 			controller.workspace.getChildren().add(text);
 		}
 	}
-
+	
 	/**
 	 * Text is removed from workspace
 	 */
@@ -121,14 +113,14 @@ public class Relation extends Line {
 			controller.workspace.getChildren().remove(text);
 		}
 	}
-
+	
 	/**
 	 * @return text on relation
 	 */
 	public TextLine getText() {
 		return text;
 	}
-
+	
 	/**
 	 * An input box is bound to the midpoint of the line
 	 * @param s - string to be displayed in input box bound to this relation
@@ -137,14 +129,13 @@ public class Relation extends Line {
 		input.setText(s);
 		controller.workspace.getChildren().remove(text);
 		controller.workspace.getChildren().add(input);
-
+		
 		input.layoutXProperty().bind(startXProperty().add(endXProperty()).divide(2));
-		input.layoutYProperty()
-				.bind(startYProperty().add(endYProperty().subtract(input.heightProperty().multiply(2))).divide(2));
+		input.layoutYProperty().bind(startYProperty().add(endYProperty().subtract(input.heightProperty().multiply(2))).divide(2));
 
 		input.requestFocus();
 	}
-
+	
 	/**
 	 * Takes text from input box and displays as plain text on relation
 	 */
@@ -154,11 +145,11 @@ public class Relation extends Line {
 		showText();
 		hideText();
 	}
-
+	
 	public ImageView getArrowHead() {
 		return arrowHead;
 	}
-
+	
 	/**
 	 * Relations are to be properly positioned and rotated
 	 * Currently arrow heads can become incorrectly positioned when boxes collapse and expand
@@ -168,14 +159,14 @@ public class Relation extends Line {
 		updateArrowRotation();
 		updateArrowPosition();
 	}
-
+	
 	/**
 	 * Arrow head rotation is updated to match that of the line
 	 */
 	public void updateArrowRotation() {
 		arrowHead.setRotate(getLineAngle());
 	}
-
+	
 	/**
 	 * Arrow head is positioned to be where this relation and the end box intersect
 	 */
@@ -226,7 +217,7 @@ public class Relation extends Line {
 		arrowHead.setX(getEndX() - (arrowHead.getImage().getWidth() / 2) + xOffset);
 		arrowHead.setY(getEndY() - (arrowHead.getImage().getHeight() /2) + yOffset);
 	}
-
+	
 	/**
 	 * Arrow heads are set based on type of relation desired
 	 * Currently only contains implementation for generalization
@@ -236,9 +227,9 @@ public class Relation extends Line {
 		if (relationType == GENERALIZATION) {
 			arrowHead.setImage(new Image("/generalization.png", false));
 		}
-		// ...
+		//...
 	}
-
+	
 	/**
 	 * removes this relation, the text on this relation, and the arrow head from the workspace
 	 */
@@ -247,7 +238,7 @@ public class Relation extends Line {
 		controller.workspace.getChildren().remove(text);
 		controller.workspace.getChildren().remove(arrowHead);
 	}
-
+	
 	/**
 	 * Angle between line and x-axis in degrees
 	 * Calculated as though startX and startY = 0
@@ -255,12 +246,12 @@ public class Relation extends Line {
 	 * @return angle between line and x-axis in degrees
 	 */
 	private double getLineAngle() {
-		// angle from startingBox to endingBox
+		//angle from startingBox to endingBox
 		double dx = getEndX() - getStartX();
 		double dy = getEndY() - getStartY();
 		double angle = Math.toDegrees(Math.atan(dy / dx));
-
-		// adjusting degrees to range from [-180, 180], instead of [-90, 90]
+		
+		//adjusting degrees to range from [-180, 180], instead of [-90, 90]
 		if (dx < 0) {
 			if (dy < 0) {
 				angle -= 180;
@@ -270,65 +261,9 @@ public class Relation extends Line {
 		}
 		return angle;
 	}
-
-	/**
-	 * deletes the logical and real relation data from their maps and shifts every
-	 * logical and real realation to the left by decrementing it's id ensuring a 
-	 * 1, 2, 3 ... ordering of creation
-	 * @param lineid
-	 */
-	public void DeleteLineData(Integer lineid) {
-		model.getLineMap().remove(lineid);
-		model.getRealLineMap().remove(lineid);
-		for (int i = lineid + 1; i < model.getLineMap().size() + 2; i++) {
-
-			LineData linei = model.getLineMap().get(i);
-			linei.ResetLineData(linei.startboxid, linei.endboxid, linei.linetextdata, model, i - 1);
-			model.getLineMap().remove(i);
-
-			Relation reallinei = model.getRealLineMap().get(i);
-			reallinei.ResetRealLineData(startboxid, endboxid, linetext, model, i - 1);
-			model.getRealLineMap().remove(i);
-		}
-	}
-
-	/**
-	 * resets the logical linedata when it needs to be updated for textual, movement,
-	 * id changes, etc.
-	 * @param startboxidin
-	 * @param endboxidin
-	 * @param linetextin
-	 * @param modelin
-	 * @param idin
-	 */
-	public void ResetRealLineData(int startboxidin, int endboxidin, ArrayList<String> linetextin, Model modelin,
-			int idin) {
-		this.startboxid = startboxidin;
-		this.endboxid = endboxidin;
-		this.linetext = linetextin;
-		this.id = idin;
-		model.getRealLineMap().put(id, this);
-	}
-
-	/**
-	 * sets the id for the relation and puts it into the real relation map, called
-	 * when the endpoint is set
-	 * @param idin
-	 */
-	public void SetId(int idin) {
-		this.id = idin;
-		model.getRealLineMap().put(id, this);
-	}
-
+	
 	public Controller getController() {
 		return controller;
 	}
-	
-	public Box getStartingBox() {
-		return startBox;
-	}
 
-	public Box getEndingBox() {
-		return endBox;
-	}
 }

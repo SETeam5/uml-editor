@@ -1,5 +1,5 @@
-import java.util.ArrayList;
-import javafx.scene.control.ScrollPane;
+import java.util.HashSet;
+import java.util.Set;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 
@@ -14,36 +14,30 @@ import javafx.scene.paint.Color;
  */
 public class Controller {
 
-	Model model;
 	ContextMenu toolbar;
 	FileMenu menu;
 	WorkSpace workspace;
 	BorderPane ui;
-	private Box selectedBox = null;
-	private Relation currentRelation = null;
-	private boolean addingRelation = false;
+	private Box selectedBox;
+	private Relation currentRelation;
+	private boolean addingRelation;
 	private Relation selectedRelation;
-	Integer boxid = 0;
-	Integer lineid = 0;
-	ArrayList<String> boxtext = new ArrayList<String>();
-	ArrayList<String> linetext = new ArrayList<String>();
+	private Set<Relation> relations;
 
 	/**
 	 * Controller constructor
 	 * Initializes controller with all UI elements
 	 */
-	public Controller(Model model) {
-		this.model = model;
-	    toolbar = new ContextMenu(this, model);
-		menu = new FileMenu(this, model);
+	public Controller() {
+		toolbar = new ContextMenu(this);
+		menu = new FileMenu(this);
 		workspace = new WorkSpace(this);
-		ScrollPane scrollpane = new ScrollPane(workspace);
-		scrollpane.getStyleClass().add("scroll-pane");
 		ui = new BorderPane();
+		relations = new HashSet<Relation>();
 		
 		ui.setLeft(toolbar);
 		ui.setTop(menu);
-		ui.setCenter(scrollpane);
+		ui.setCenter(workspace);
 	}
 	
 	/**
@@ -75,30 +69,22 @@ public class Controller {
 	public void deleteSelected() {
 		if (selectedBox != null) {
 			workspace.getChildren().remove(selectedBox);
-			selectedBox.DeleteRectangleData(selectedBox.id);
-			toolbar.boxid--;
 			toolbar.hideDeleteButton();
 			toolbar.hideAddRelationButton();
 			//remove any relations attached to the box being removed
-			for (int i = 1; i < model.reallinemap.size() + 1; i++) {
-				System.out.println(model.reallinemap);
-				Relation r = model.reallinemap.get(i);
-				System.out.println(r);
-				if (r.getEndingBox() == selectedBox || r.getStartingBox() == selectedBox) {
+			Set<Relation> relationsToRemove = new HashSet<Relation>();
+			for (Relation r : relations) {
+				if (r.getEndBox() == selectedBox || r.getStartBox() == selectedBox) {
 					r.remove();
-					r.DeleteLineData(r.id);
-					lineid--;
-					r = null;
-					i--;
+					relationsToRemove.add(r);
 				}
 			}
+			relations.removeAll(relationsToRemove);
 			
 			selectedBox = null;
 		}
 		if (selectedRelation != null) {
 			selectedRelation.remove();
-			selectedRelation.DeleteLineData(selectedRelation.id);
-			lineid--;
 			toolbar.hideDeleteButton();
 			toolbar.showAddBoxButton();
 			selectedRelation = null;
@@ -155,12 +141,12 @@ public class Controller {
 	public void startNewRelation() {
 		if (selectedBox != null) {
 			addingRelation = true;
-			currentRelation = new Relation(selectedBox, this, model);
+			currentRelation = new Relation(selectedBox, this);
 		}
 	}
 	
 	/**
-	 * Completes a new Relation line and stores line and linedata into the model
+	 * Completes a new Relation line
 	 * @param b - the endpoint box for the line
 	 */
 	public void endCurrentRelation(Box b) {
@@ -170,9 +156,6 @@ public class Controller {
 			currentRelation.setEndPoint(b);
 			workspace.getChildren().add(currentRelation);
 			currentRelation.toBack();
-			lineid++;
-			LineData linedata = new LineData(currentRelation.getStartingBox().id,currentRelation.getEndingBox().id,linetext,model,lineid);
-			currentRelation.SetId(lineid);
 			currentRelation = null;
 			addingRelation = false;
 		} else {
@@ -222,11 +205,18 @@ public class Controller {
 	}
 	
 	/**
+	 * Adds a Relation to the set
+	 * @param r - the Relation to be added
+	 */
+	public void addRelation(Relation r) {
+		relations.add(r);
+	}
+	
+	/**
 	 * Iterates through all relations and runs the update method to adjust their locations
 	 */
 	public void updateRelations() {
-		for (int i = 1; i < model.reallinemap.size() + 1; i++) {
-			Relation r = model.reallinemap.get(i);
+		for (Relation r : relations) {
 			r.update();
 		}
 	}
@@ -247,4 +237,11 @@ public class Controller {
 		return selectedRelation;
 	}
 	
+	/**
+	 * Getter for all Relations
+	 * @return - the set of Relations
+	 */
+	public Set<Relation> getRelations() {
+		return relations;
+	}
 }

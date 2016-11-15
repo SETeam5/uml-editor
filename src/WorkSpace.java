@@ -19,6 +19,8 @@ public class WorkSpace extends Pane{
 		
 		controller = c;
 		WorkSpace workspace = this;
+		setMinHeight(700);
+		setMinWidth(1300);
 		
 		getStyleClass().add("noGrid");
 		

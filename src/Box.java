@@ -12,7 +12,8 @@ public class Box extends VBox {
 	private Section[] sections = {new Section(this, "add class name", true), new Section(this, "add attribute", false), new Section(this, "add operation", false), new Section(this, "add miscellaneous", false)};
 	private Double offsetX;
 	private Double offsetY;
-
+	private int previousx = 0;
+	private int previousy = 0;
 	/**
 	 * Box constructor
 	 * Boxes are initialized with event handlers for mousedowns, click-and-drags, and clicks
@@ -34,6 +35,20 @@ public class Box extends VBox {
 				controller.showGrid();
 				double x = event.getSceneX() - offsetX;
 				double y = event.getSceneY() - offsetY;
+				if ((x < 0) || (y < 0)) {
+					x = previousx;
+					y = previousy;
+				}
+				if ((x + thisBox.getWidth()) > controller.workspace.getWidth() && (x > 1300)) {
+					controller.workspace.setMinWidth(x);
+			        controller.scrollpane.setHvalue(controller.scrollpane.getHmax()); 
+				}
+				if ((y + thisBox.getHeight()) > controller.workspace.getHeight() && (y > 700)) {
+					controller.workspace.setMinHeight(y);
+			        controller.scrollpane.setVvalue(controller.scrollpane.getVmax()); 
+				}
+				previousx = Math.floorDiv((int) x, 20) * 20;
+				previousy = Math.floorDiv((int) y, 20) * 20;
 				//round to nearest 20 px
 				relocate(Math.floorDiv((int) x, 20) * 20, Math.floorDiv((int) y, 20) * 20);
 				controller.updateRelations();

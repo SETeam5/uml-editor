@@ -1,5 +1,7 @@
 import java.util.HashSet;
 import java.util.Set;
+
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 
@@ -17,6 +19,7 @@ public class Controller {
 	ContextMenu toolbar;
 	FileMenu menu;
 	WorkSpace workspace;
+	ScrollBars scrollpane;
 	BorderPane ui;
 	private Box selectedBox;
 	private Relation currentRelation;
@@ -32,12 +35,13 @@ public class Controller {
 		toolbar = new ContextMenu(this);
 		menu = new FileMenu(this);
 		workspace = new WorkSpace(this);
+		scrollpane = new ScrollBars(this);
 		ui = new BorderPane();
 		relations = new HashSet<Relation>();
 		
 		ui.setLeft(toolbar);
 		ui.setTop(menu);
-		ui.setCenter(workspace);
+		ui.setCenter(scrollpane);
 	}
 	
 	/**
